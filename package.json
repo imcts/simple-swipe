@@ -1,0 +1,22 @@
+{
+  "name": "swipe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "sass --watch ./src/scss/index.scss ./src/css/index.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imcts/simple-swipe.git"
+  },
+  "author": "dolen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/imcts/simple-swipe/issues"
+  },
+  "homepage": "https://github.com/imcts/simple-swipe#readme",
+  "devDependencies": {
+    "sass": "^1.23.0"
+  }
+}
