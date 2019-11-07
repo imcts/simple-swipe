@@ -32,3 +32,66 @@ html, body {
     width: calc(100% / var(--n));
   }
 }
+
+/**
+ * @description-word
+ * 카드: 인기순위 내부의 카드아이템을 칭합니다.
+ * 컨테이너: 카드들을 담고있는 .ranking-summary-card-container 입니다.
+ *
+ * @description-variables
+ * --i: 현재 선택된 카드의 인덱스입니다.
+ * --size: 전체 카드의 수 입니다.
+ * --moving: 사용자가 드래그 액션을 수행하는 동안 변경될 값입니다.
+ * --addition: 카드의 가로가 90%이기 때문에 마지막 카드는 우측에 붙어야 합니다. 그로인해 현재 선택된 카드가 마지막일때 추가할 위치값 입니다.
+ *
+ * @description-calculation
+ * 전체 카드수가 4개인 경우로 설명 합니다.
+ * 컨테이너의 가로길이는 카드의 개수만큼이므로 100% * 카드의 개수인 400% 입니다.
+ * 카드는 각각 90%의 길이를 갖습니다.
+ * 1. 컨테이너가 400%이고, 인덱스가 1인경우 컨테이너는 카드의 넓이만큼만 좌측으로 이동 합니다.
+ * 2. 카드의 넓이는 90%이므로 -90%만큼 컨테이너를 이동 시킵니다.
+ * 3. 컨테이너의 가로는 현재 400%이므로 -90%만큼 이동 시킵니다.
+ * 4. (현재 인덱스 * 카드아이템의 가로길이 / 전체카드수)를 연산하여 -22.5%만큼 좌측으로 이동 시킵니다.
+ * 5. 각 카드 사이에는 마진이 적용되어 있으므로 (마진 * 인덱스) 합산합니다.
+ * 6. 마지막 카드인 경우 우측으로 컨테이너가 붙어야 하므로 카드의 가로길이 중 나머지 10%를 연산하여 추가합니다. (이 연산은 자바스크립트에서 수행 합니다.)
+ * 7. 사용자가 드래그 액션을 수행하는 동안 변경되는 위치값을 추가합니다.
+ */
+@mixin insight-card-container ($wrapWidth, $cardWith, $cardMargin, $remainedWidth) {
+  --i: 0;
+  --size: 0;
+  --moving: 0px;
+  --addition: 0%;
+  width: calc(var(--size) * #{$wrapWidth});
+  font-size: 0;
+  transform: translate(calc(
+    var(--i) * -#{$cardWith} / var(--size)
+    + (-#{$cardMargin} * var(--i))
+    + var(--addition)
+    + var(--moving)
+  ));
+
+  &.smooth {
+    transition: transform 0.1s ease-out
+  }
+
+  &.last {
+    --addition: calc(#{$remainedWidth} / var(--size))
+  }
+}
+
+/**
+ * @description-calculation
+ * 1. 카드의 width는 부모 콘테이너 넓이의 90%를 차지합니다.
+ * 2. 부모 컨테이너의 width는 카드의 넓이(화면의 가로 100%) * 카드의 수 입니다.
+ * 3. 카드의 width를 구하기 위해 부모 컨테이너의 width를 카드의 수로 나눕니다.
+ * 4. 90%를 만들어주기 위해 위해 부모 콘테이너의 width중 10%를 카드수로 나눈 값만큼 마이너스 합니다.
+ */
+@mixin insight-card-item ($cardMargin, $containerWidth, $remainedWidth) {
+  width: calc(#{$containerWidth} / var(--size) - #{$remainedWidth} / var(--size));
+  height: 418px;
+  margin-left: $cardMargin;
+
+  &:first-child {
+    margin-left: 0
+  }
+}
