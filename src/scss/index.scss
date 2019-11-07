@@ -24,7 +24,7 @@ html, body {
   transform: translate(calc(var(--i) / var(--n) * -100% + var(--x)));
 
   &.smooth {
-    transition: transform .5s ease-out;
+    transition: transform 0.15s ease-out;
   }
 
   img {
